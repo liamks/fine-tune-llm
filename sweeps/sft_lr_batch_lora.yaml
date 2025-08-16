@@ -1,0 +1,25 @@
+program: scripts/train.py
+method: random
+metric:
+  name: eval_loss
+  goal: minimize
+parameters:
+  train.learning_rate:
+    values: [5.0e-6, 1.0e-5, 2.0e-5, 5.0e-5]
+  train.gradient_accumulation_steps:
+    values: [4, 8, 12]   # with per_device=8 => eff batch 32/64/96
+  lora.r:
+    values: [4, 8, 16]
+  lora.alpha:
+    value: 16
+  train.warmup_ratio:
+    values: [0.03, 0.05]
+  train.weight_decay:
+    values: [0.0, 0.01]
+command:
+  - ${env}
+  - python
+  - ${program}
+  - --config
+  - configs/train.default.yaml
+  - --sweep
