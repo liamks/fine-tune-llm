@@ -8,7 +8,7 @@ def build_model_and_tokenizer(base_repo, max_seq_len, lora_cfg, attn_impl="flash
 
     model, tokenizer = FastLanguageModel.from_pretrained(
         model_name=base_repo,
-        max_seq_len=max_seq_len,
+        max_seq_length=max_seq_len,
         load_in_4bit=True,
         attn_implementation=attn_impl,
     )
@@ -23,7 +23,7 @@ def build_model_and_tokenizer(base_repo, max_seq_len, lora_cfg, attn_impl="flash
         lora_dropout=lora_cfg["dropout"],
         bias=lora_cfg["bias"],
         target_modules=lora_cfg["target_modules"],
-        task_type="CASUAL_LM",
+        task_type="CAUSAL_LM",
     )
 
     # Apply LoRA (Unsloth helper)

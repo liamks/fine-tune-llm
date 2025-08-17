@@ -1,9 +1,9 @@
 import argparse, os
 from transformers import TrainingArguments
 from trl import SFTTrainer, SFTConfig
-from scripts.utils import load_config, deep_update, set_seed, enable_tf32, env_flag
-from scripts.dataset import load_jsonl_text_dataset
-from scripts.modeling import build_model_and_tokenizer
+from .utils import load_config, deep_update, set_seed, enable_tf32, env_flag
+from .dataset import load_jsonl_text_dataset
+from .modeling import build_model_and_tokenizer
 
 
 def parse_args():

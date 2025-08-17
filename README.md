@@ -37,6 +37,8 @@ Data format: JSONL with a text field. Put files under data/.
 * `uv pip compile requirements.txt -o requirements.lock.txt`
 * `uv pip install -r requirements.txt`
 
+## run
+* `python3.12 -m  scripts.train --config configs/train.default.yaml`
 
 
 ## Connect
