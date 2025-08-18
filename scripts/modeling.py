@@ -17,14 +17,14 @@ def build_model_and_tokenizer(base_repo, max_seq_len, lora_cfg, attn_impl="flash
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
-    peft_cfg = LoraConfig(
-        r=lora_cfg["r"],
-        lora_alpha=lora_cfg["alpha"],
-        lora_dropout=lora_cfg["dropout"],
-        bias=lora_cfg["bias"],
-        target_modules=lora_cfg["target_modules"],
-        task_type="CAUSAL_LM",
-    )
+    # peft_cfg = LoraConfig(
+    #     r=lora_cfg["r"],
+    #     lora_alpha=lora_cfg["alpha"],
+    #     lora_dropout=lora_cfg["dropout"],
+    #     bias=lora_cfg["bias"],
+    #     target_modules=lora_cfg["target_modules"],
+    #     task_type="CAUSAL_LM",
+    # )
 
     # Apply LoRA (Unsloth helper)
     model = FastModel.get_peft_model(
@@ -36,7 +36,7 @@ def build_model_and_tokenizer(base_repo, max_seq_len, lora_cfg, attn_impl="flash
         **{k: lora_cfg[k] for k in ["r"]} # r used internally; alpha/dropout handled by PEFT
     )
 
-    model.add_adapter(peft_cfg)
+    #model.add_adapter(peft_cfg)
 
     # Unsloth speedups (compile) for training; disable at inference/export
     if use_unsloth_compile:
