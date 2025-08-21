@@ -5,7 +5,7 @@ peft
 datasets
 unsloth
 bitsandbytes
-wand
+wandb
 flash-attn
 pyyaml
 timm

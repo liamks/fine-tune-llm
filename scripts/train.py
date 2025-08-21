@@ -1,3 +1,4 @@
+from unsloth import FastLanguageModel, FastModel
 import argparse, os
 from transformers import TrainingArguments
 from trl import SFTTrainer, SFTConfig
