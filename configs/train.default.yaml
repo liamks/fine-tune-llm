@@ -24,8 +24,8 @@ train:
   weight_decay: 0.01
   lr_scheduler_type: "linear"
   seed: 3407
-  bf16: false
-  fp16: true
+  bf16: true
+  fp16: false
   gradient_checkpointing: true
   report_to: ["wandb"]
   optim: "adamw_8bit"

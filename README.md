@@ -50,5 +50,9 @@ Data format: JSONL with a text field. Put files under data/.
 * `https://github.com/liamks/fine-tune-llm`
 * `cd fine-tune-llm`
 * `uv venv`
-* `uv pip install torch`
+* `uv pip install torch --index-url https://download.pytorch.org/whl/cu128`
 * `uv pip install -r environment/requirements.txt`
+* `aws s3 ls s3://llm-train-data-5ty` # This should work now!
+* `aws s3 cp s3://llm-train-data-5ty/ ../data/ --recursive`
+* `
+* `
