@@ -43,3 +43,12 @@ Data format: JSONL with a text field. Put files under data/.
 
 ## Connect
 `ssh -i llm-kp.pem ec2-user@[IP-ADDRESS]`
+
+
+## Setup AWS instance
+* `wget -qO- https://astral.sh/uv/install.sh | sh`
+* `https://github.com/liamks/fine-tune-llm`
+* `cd fine-tune-llm`
+* `uv venv`
+* `uv pip install torch`
+* `uv pip install -r environment/requirements.txt`
