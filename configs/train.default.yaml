@@ -10,10 +10,11 @@ data:
 # ---- training ------
 train:
   output_dir: "outputs/gemma3n_qlora_sft"
+  dataset_num_proc: 4
   num_train_epochs: 0
   max_steps: 8000
-  per_device_train_batch_size: 8
-  gradient_accumulation_steps: 8
+  per_device_train_batch_size: 10
+  gradient_accumulation_steps: 4
   eval_strategy: "steps"
   logging_steps: 50
   eval_steps: 200

@@ -47,12 +47,13 @@ Data format: JSONL with a text field. Put files under data/.
 
 ## Setup AWS instance
 * `wget -qO- https://astral.sh/uv/install.sh | sh`
-* `https://github.com/liamks/fine-tune-llm`
+* `git clone https://github.com/liamks/fine-tune-llm`
 * `cd fine-tune-llm`
 * `uv venv`
 * `uv pip install torch --index-url https://download.pytorch.org/whl/cu128`
 * `uv pip install -r environment/requirements.txt`
+* [Attach policy - S3-read-access]
 * `aws s3 ls s3://llm-train-data-5ty` # This should work now!
 * `aws s3 cp s3://llm-train-data-5ty/ ../data/ --recursive`
-* `
-* `
+* export WANDB_API_KEY=...
+* `source .venv/bin/activate`
