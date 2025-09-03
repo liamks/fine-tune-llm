@@ -39,6 +39,9 @@ Data format: JSONL with a text field. Put files under data/.
 
 ## run
 * `python3.12 -m  scripts.train --config configs/train.default.yaml`
+* `accelerate launch -m scripts.train -- --config configs/train.default.yaml`
+* `/home/ec2-user/.cache/huggingface/accelerate/default_config.yaml`
+* `python -m scripts.pretokenize --config configs/train.default.yaml`
 
 
 ## Connect

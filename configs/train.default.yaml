@@ -1,6 +1,6 @@
 # ---- data ------
 data:
-  train_path: "data/train-small.jsonl"
+  train_path: "data/train-large.jsonl"
   eval_path: "data/validate-small.jsonl"
   text_key: "text"
   max_seq_len: 2048
@@ -13,7 +13,7 @@ train:
   dataset_num_proc: 4
   num_train_epochs: 0
   max_steps: 8000
-  per_device_train_batch_size: 10
+  per_device_train_batch_size: 2
   gradient_accumulation_steps: 4
   eval_strategy: "steps"
   logging_steps: 50
@@ -40,7 +40,7 @@ lora:
 
 # ---- model/base ------
 model:
-  base_repo: "unsloth/gemma-3n-E4B-it"
+  base_repo: "unsloth/gemma-3-1b-it-bnb-4bit"
   attn_impl: "flash_attention_2"
   use_unsloth_compile: true
 

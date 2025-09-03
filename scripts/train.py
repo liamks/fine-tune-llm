@@ -1,4 +1,4 @@
-from unsloth import FastLanguageModel, FastModel
+
 import argparse, os
 from transformers import TrainingArguments
 from trl import SFTTrainer, SFTConfig
@@ -49,9 +49,26 @@ def main():
     set_seed(cfg["train"]["seed"])
     enable_tf32()
 
-    # Data
-    train_ds = load_jsonl_text_dataset(cfg["data"]["train_path"], cfg["data"]["text_key"])
-    eval_ds = load_jsonl_text_dataset(cfg["data"]["eval_path"], cfg["data"]["text_key"])
+    # Data (tokenize once, then always load from cache)
+    train_ds = load_jsonl_text_dataset(
+        cfg["data"]["train_path"],
+        text_key=cfg["data"]["text_key"],
+        tokenizer=tokenizer,                         # from build_model_and_tokenizer
+        max_seq_len=cfg["data"]["max_seq_len"],
+        add_eos=False,                               # or True if you want to enforce EOS
+        num_proc=os.cpu_count(),                     # optional: speed up map()
+        map_batch_size=1000,                         # tune for throughput
+    )
+
+    eval_ds = load_jsonl_text_dataset(
+        cfg["data"]["eval_path"],
+        text_key=cfg["data"]["text_key"],
+        tokenizer=tokenizer,
+        max_seq_len=cfg["data"]["max_seq_len"],
+        add_eos=False,
+        num_proc=os.cpu_count(),
+        map_batch_size=1000,
+    )
 
     # Model
     model, tokenizer = build_model_and_tokenizer(
@@ -86,17 +103,17 @@ def main():
         seed = cfg["train"]["seed"],
         run_name = cfg["misc"]["run_name"],
         ddp_find_unused_parameters = False,
+        dataset_text_field = cfg["data"]["text_key"],
+        max_length = cfg["data"]["max_seq_len"],
+        packing = True,  # concat samples to fill sequence efficiently
     )
 
     trainer = SFTTrainer(
         model = model,
-        tokenizer = tokenizer,
+        processing_class = tokenizer,
         train_dataset = train_ds,
         eval_dataset = eval_ds,
         args = sft_args,
-        dataset_text_field = cfg["data"]["text_key"],
-        packing = True,  # concat samples to fill sequence efficiently
-        max_seq_length = cfg["data"]["max_seq_len"],
     )
 
     trainer.train()

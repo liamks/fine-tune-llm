@@ -69,8 +69,11 @@ data/train-large.jsonl
 data/train-medium.jsonl
 data/train-small.jsonl
 data/validate-small.jsonl
+data/train-large*
+data/validate-small*
 data/tmp/
 data/cache/
+
 .cache/
 *.arrow
 *.h5
