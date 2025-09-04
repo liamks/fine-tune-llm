@@ -1,4 +1,13 @@
 
+# --- must be first lines in train.py ---
+import os, torch, torch.distributed as dist
+LOCAL_RANK = int(os.environ.get("LOCAL_RANK", os.environ.get("SLURM_LOCALID", "0")))
+if torch.cuda.is_available():
+    # Tell PyTorch which device this process owns
+    os.environ["TORCH_DISTRIBUTED_DEFAULT_DEVICE"] = f"cuda:{LOCAL_RANK}"
+    torch.cuda.set_device(LOCAL_RANK)
+
+
 import argparse, os
 from transformers import TrainingArguments
 from trl import SFTTrainer, SFTConfig
@@ -49,7 +58,18 @@ def main():
     set_seed(cfg["train"]["seed"])
     enable_tf32()
 
-    # Data (tokenize once, then always load from cache)
+
+
+    # Model
+    model, tokenizer = build_model_and_tokenizer(
+        base_repo = cfg["model"]["base_repo"],
+        max_seq_len = cfg["data"]["max_seq_len"],
+        lora_cfg = cfg["lora"],
+        attn_impl = cfg["model"]["attn_impl"],
+        use_unsloth_compile = cfg["model"]["use_unsloth_compile"],
+    )
+
+        # Data (tokenize once, then always load from cache)
     train_ds = load_jsonl_text_dataset(
         cfg["data"]["train_path"],
         text_key=cfg["data"]["text_key"],
@@ -68,15 +88,6 @@ def main():
         add_eos=False,
         num_proc=os.cpu_count(),
         map_batch_size=1000,
-    )
-
-    # Model
-    model, tokenizer = build_model_and_tokenizer(
-        base_repo = cfg["model"]["base_repo"],
-        max_seq_len = cfg["data"]["max_seq_len"],
-        lora_cfg = cfg["lora"],
-        attn_impl = cfg["model"]["attn_impl"],
-        use_unsloth_compile = cfg["model"]["use_unsloth_compile"],
     )
 
         # Training args (TRL SFTConfig extends TrainingArguments)
@@ -105,7 +116,7 @@ def main():
         ddp_find_unused_parameters = False,
         dataset_text_field = cfg["data"]["text_key"],
         max_length = cfg["data"]["max_seq_len"],
-        packing = True,  # concat samples to fill sequence efficiently
+        #packing = True,  # concat samples to fill sequence efficiently
     )
 
     trainer = SFTTrainer(

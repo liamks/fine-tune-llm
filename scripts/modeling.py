@@ -3,12 +3,6 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 import os
 import torch
 
-import os, torch
-if torch.cuda.is_available():
-    local_rank = int(os.environ.get("LOCAL_RANK", "0"))
-    torch.cuda.set_device(local_rank)   # <-- kills the NCCL “unknown device” warning
-
-
 
 
 def build_model_and_tokenizer(base_repo, max_seq_len, lora_cfg, attn_impl="flash_attention_2", use_unsloth_compile=True, use_ddp=True,):

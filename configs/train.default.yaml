@@ -29,7 +29,7 @@ train:
   fp16: false
   gradient_checkpointing: true
   report_to: ["wandb"]
-  optim: "adamw_8bit"
+  optim: "adamw_torch_fused" #"adamw_8bit"
 
 lora:
   r: 8
@@ -41,7 +41,7 @@ lora:
 # ---- model/base ------
 model:
   base_repo: "unsloth/gemma-3-1b-it-bnb-4bit"
-  attn_impl: "flash_attention_2"
+  attn_impl: "eager"
   use_unsloth_compile: true
 
 # ---- misc ------
